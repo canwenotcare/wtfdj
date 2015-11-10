@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "WTF DJ",
+  "short_name": "WTF DJ",
+  "description": "Simple DJ app with independent time and pitch manipulation.",
+  "version": "1.1",
+  "minimum_chrome_version": "38",
+
+  "icons": {
+    "16": "assets/icon_16.png",
+    "128": "assets/icon_128.png"
+  },
+
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+    {"fileSystem":["retainEntries","directory"]},
+    "power"
+  ],
+  "offline_enabled": true
+}
