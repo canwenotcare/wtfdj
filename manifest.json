@@ -17,8 +17,9 @@
     }
   },
   "permissions": [
-    {"fileSystem":["retainEntries","directory"]},
-    "power"
+    {"fileSystem":["write","retainEntries","directory"]},
+    "power",
+    "pointerLock"
   ],
   "offline_enabled": true
 }
