@@ -1,4 +1,3 @@
-
 var ac = new window.AudioContext();
 var oc = new OfflineAudioContext(2, 44100, 44100);
 var ad = ac.createGain();
@@ -9,10 +8,8 @@ var height = 500;
 var width = 500;
 var vc = document.getElementById('canvas').getContext('2d');
 vc.lineWidth = 1;
-
 function fill(rgb) {vc.fillStyle = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';}
 function stroke(rgb) {vc.strokeStyle = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';}
-
 var purple=[128,128,255];
 var lightpurple=[192,192,255];
 var cyan = [0,255,255];
@@ -28,7 +25,6 @@ var red = [255,0,0];
 var lightred = [255,64,64];
 var pink = [255,128,128];
 var lightpink = [255,192,192];
-
 function container(x,y,w,h,children){
   this.x = x;this.y = y;this.w = w;this.h = h;
   this.drawx = 0;
@@ -114,7 +110,6 @@ vscroll.prototype.draw = function(){
   vc.fillRect(this.drawx,this.drawy+(this.target.voffset*this.drawh/maxy),
               this.draww,this.drawh/maxy);
 };
-
 function ltriangle(x,y,w,h,bgcolor,fgcolor) {
     container.call(this,x,y,w,h,[]);
     this.bgcolor = bgcolor;
@@ -369,7 +364,6 @@ masterchannel.prototype.mousedown = container.prototype.mousedown;
 masterchannel.prototype.mouseup = container.prototype.mouseup;
 masterchannel.prototype.mousemove = container.prototype.mousemove;
 masterchannel.prototype.wheel = container.prototype.wheel;
-
 var tracks = new container(0,0,15/16,1,[]);
 var trackscroll = new vscroll(15/16,0,1/16,1,gray,white,tracks);
 var browser = new container(0,0,1/3,2/3,[tracks,trackscroll]);
@@ -461,11 +455,6 @@ function pulse() {
       master.keyleft.bgcolor = color;
       master.key.bgcolor = color;
       master.keyright.bgcolor = color;
-}
-function queue(deck, seekratio) {
-    deck.seek.value = deck.seek.duration * seekratio;
-    deck.seek -= deck.seek % (240 / deck.bpm);
-    deck.pulse = 0;
 }
 function resize() {
     width = window.innerWidth;height = window.innerHeight;
