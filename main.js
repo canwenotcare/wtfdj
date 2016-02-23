@@ -159,9 +159,9 @@ twobars.prototype.draw = function() {
   else fill(this.fgcolor);
   var wmargin = this.draww/4;
   var hmargin = this.drawh/4;
-  var barw = (this.draww - hmargin*2)/3;
+  var barw = (this.draww - (wmargin * 2)) / 3;
   vc.fillRect(this.drawx+wmargin, this.drawy+hmargin, barw, this.drawh - hmargin*2);
-  vc.fillRect(this.drawx+(this.draww-(wmargin+barw)), this.drawy+hmargin, barw, this.drawh - hmargin*2);
+  vc.fillRect(this.drawx+wmargin+barw+barw, this.drawy+hmargin, barw, this.drawh - hmargin*2);
 };
 function seek(x,y,w,h,color){
   container.call(this,x,y,w,h,[]);
@@ -178,11 +178,14 @@ seek.prototype.draw = function(){
 function gain(x,y,w,h,color){
   container.call(this,x,y,w,h,[]);
   this.color = color;
-  this.value = 1;
+  this.value = 2/3;
 }
 gain.prototype.draw = function(){
   fill(this.color);vc.fillRect(this.drawx,this.drawy,this.draww,this.drawh);
   fill(black);vc.fillRect(this.drawx,this.drawy,this.draww*this.value,this.drawh);
+};
+gain.prototype.mousedown = function(event){
+  this.value = (event.clientX - this.drawx)/this.draww;
 };
 function number(x,y,w,h,bgcolor,fgcolor,value,min,max){
   container.call(this,x,y,w,h,[]);
@@ -197,7 +200,7 @@ number.prototype.draw = function(){
   else fill(this.fgcolor);
   vc.textAlign="middle";
   vc.font = '' + Math.floor(this.drawh*1/3) + 'px mono';
-  vc.fillText(this.value,this.drawx+3,this.drawy+this.drawh*3/4);
+  vc.fillText(this.value,this.drawx+this.draww/4,this.drawy+this.drawh*2/4,this.draww-6);
 };
 number.prototype.wheel = function(event){
   if(event.deltaY < 0)this.value++;
@@ -237,6 +240,11 @@ track.prototype.mousedown = function(event){
 function deck(x,y,w,h,dark,light){
   var idk = this;
   this.seek = new seek(0,0,1,1/2,dark);
+  this.seek.mousedown = function(event){
+    this.value = this.duration * (event.clientX-this.drawx)/this.draww;
+    this.value -= this.value % (60 / idk.bpm.value);
+    idk.pulse = 0;
+  };
   this.play = new rtriangle(0,1/2,1/4,1/2,light,black);
   this.play.mousedown = function(){
     if(this.draw===rtriangle.prototype.draw)this.draw=twobars.prototype.draw;
@@ -440,10 +448,23 @@ function pulse() {
     if(bdeck.buffer)bdeck.playstep();
     if(cdeck.buffer)cdeck.playstep();
     if(ddeck.buffer)ddeck.playstep();
+    var color = white;
+    switch(master.pulse){
+      case 0:color=white;break;
+      case 1:color=lightpink;break;
+      case 2:color=pink;break;
+      case 3:color=red;break;
+    }
+      master.bpmleft.bgcolor = color;
+      master.bpm.bgcolor = color;
+      master.bpmright.bgcolor = color;
+      master.keyleft.bgcolor = color;
+      master.key.bgcolor = color;
+      master.keyright.bgcolor = color;
 }
 function queue(deck, seekratio) {
-    deck.seek = deck.duration * seekratio;
-    deck.seek -= deck.seek % (60 / deck.bpm);
+    deck.seek.value = deck.seek.duration * seekratio;
+    deck.seek -= deck.seek % (240 / deck.bpm);
     deck.pulse = 0;
 }
 function resize() {
