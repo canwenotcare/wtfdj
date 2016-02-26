@@ -17,9 +17,7 @@
     }
   },
   "permissions": [
-    {"fileSystem":["directory"]},
-    "power",
-    "pointerLock"
+    {"fileSystem":["directory"]}
   ],
   "offline_enabled": true
 }
