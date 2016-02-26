@@ -238,7 +238,7 @@ function deck(x,y,w,h,dark,light){
   this.seek.mousedown = function(event){
     this.value = this.duration * (event.clientX-this.drawx)/this.draww;
     this.value -= this.value % (60 / idk.bpm.value);
-    idk.pulse = 0;
+    this.value += idk.pulse * (15 / idk.bpm.value);
   };
   this.play = new rtriangle(0,1/2,1/4,1/2,light,black);
   this.play.mousedown = function(){
@@ -364,9 +364,13 @@ masterchannel.prototype.mousedown = container.prototype.mousedown;
 masterchannel.prototype.mouseup = container.prototype.mouseup;
 masterchannel.prototype.mousemove = container.prototype.mousemove;
 masterchannel.prototype.wheel = container.prototype.wheel;
-var tracks = new container(0,0,15/16,1,[]);
+var openbutton = new text(0,0,1,1/20,black,white,"Click here to add a directory...");
+openbutton.mousedown = function(event){
+  browser.choose();
+};
+var tracks = new container(0,1/20,15/16,19/20,[]);
 var trackscroll = new vscroll(15/16,0,1/16,1,gray,white,tracks);
-var browser = new container(0,0,1/3,2/3,[tracks,trackscroll]);
+var browser = new container(0,0,1/3,2/3,[openbutton,tracks,trackscroll]);
 browser.wheel = function(event){
   var trackheight = 1/20;
   var maxy = -1*trackheight;
@@ -483,7 +487,7 @@ var allowwheel = true;
 function wheel(event) {
   if(allowwheel){
     allowwheel = false;
-    window.setTimeout(function(){allowwheel=true;},50);
+    window.setTimeout(function(){allowwheel=true;},20);
     root.wheel(event);
   }
 }
